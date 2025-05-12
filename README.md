@@ -1,31 +1,57 @@
 # EV_Charge_Maroc
 
+## Table of Contents
+
+- [Description](#description)
+- [Main Features](#main-features)
+- [Prerequisites](#prerequisites)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [Common Issues](#common-issues)
+- [Contact](#contact)
+- [License](#license)
+
 ## Description
-EV_Charge_Maroc est une plateforme Django complète pour gérer les stations de recharge pour véhicules électriques au Maroc. Le projet permet aux utilisateurs de trouver des stations de recharge sur une carte interactive, réserver des sessions de charge, effectuer des paiements via Stripe, et générer des QR codes pour l'authentification.
 
-## Fonctionnalités principales
-- 🔌 Localisation des stations de recharge sur carte
-- 📅 Système de réservation de sessions de charge
-- 💳 Intégration de paiements via Stripe
-- 📱 Génération de QR codes pour l'authentification
-- 👤 Gestion des profils utilisateurs
-- 📊 Tableau de bord administrateur
+EV_Charge_Maroc is a comprehensive Django platform for managing electric vehicle charging stations in Morocco. The project allows users to find charging stations on an interactive map, book charging sessions, make payments via Stripe, and generate QR codes for authentication.
 
-## Prérequis
+## Main Features
+
+- 🔌 Interactive map with charging station locations
+- 📅 Charging session reservation system
+- 💳 Stripe payment integration
+- 📱 QR code generation for authentication
+- 👤 User profile management
+- 📊 Administrator dashboard
+
+## Prerequisites
+
 - Python 3.13.2
-- XAMPP (pour MySQL/MariaDB)
+- XAMPP (for MySQL/MariaDB)
 - Git
-- Compte Stripe (pour les tests de paiement)
+- Stripe account (for payment testing)
+
+## Technologies Used
+
+- **Django**: Backend framework for building the web application
+- **Stripe**: For payment integration
+- **OpenChargeMap API**: For importing station data
+- **MySQL/MariaDB**: Database for storing application data
+- **Python-dotenv**: For managing environment variables
+- **HTML/CSS/JavaScript**: For the frontend
 
 ## Installation
 
-### 1. Cloner le dépôt
+### 1. Clone the Repository
+
 ```bash
 git clone https://github.com/Mohamed-Amine-NIHMATOUALLAH/EV_Charge_Maroc.git
 cd EV_Charge_Maroc
 ```
 
-### 2. Créer et activer l'environnement virtuel
+### 2. Create and Activate Virtual Environment
+
 ```bash
 # Windows
 python -m venv venv
@@ -36,105 +62,140 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Installer les dépendances
+### 3. Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 
-# Assurez-vous d'installer python-dotenv s'il n'est pas dans requirements.txt
+# Make sure to install python-dotenv if it's not in requirements.txt
 pip install python-dotenv
 ```
 
-### 4. Configurer les variables d'environnement
-```bash
-# Copier le fichier template
-cp .env.template .env
+### 4. Configure Environment Variables
 
-# Modifier le fichier .env avec vos informations
+Create a `.env` file at the root of the project (same folder as `manage.py`) and add the following variables:
+
+```plaintext
+SECRET_KEY=your_django_secret_key
+DATABASE_NAME=ev_charge_maroc
+DATABASE_USER=root
+DATABASE_PASSWORD=your_password
+STRIPE_API_KEY=your_stripe_api_key
+EMAIL_HOST_USER=your_email
+EMAIL_HOST_PASSWORD=your_email_password
 ```
 
-⚠️ **IMPORTANT** : 
-- Le fichier `.env` doit être créé à la racine du projet (dans le même dossier que `manage.py`)
-- Ce fichier contient des informations sensibles et n'est PAS inclus dans le dépôt Git
-- Vous devez créer votre propre fichier `.env` à partir du template et y ajouter vos propres valeurs pour :
+⚠️ **IMPORTANT**:
 
-  - **Django** : Générez une nouvelle SECRET_KEY pour la sécurité
-  - **Base de données** : Configurez selon votre installation MySQL
-  - **Stripe** : Ajoutez vos propres clés API Stripe pour les tests de paiement
-  - **Email** : Configurez avec vos propres identifiants SMTP
+- The `.env` file contains sensitive information and is NOT included in the Git repository
+- You must create your own `.env` file using the template above and add your own values for:
+  - **Django**: Generate a new SECRET_KEY for security
+  - **Database**: Configure according to your MySQL installation
+  - **Stripe**: Add your own Stripe API keys for payment testing
+  - **Email**: Configure with your own SMTP credentials
 
-Pour générer une nouvelle Django SECRET_KEY, vous pouvez utiliser cette commande :
+To generate a new Django SECRET_KEY, you can use this command:
+
 ```bash
 python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"
 ```
 
-### 5. Configurer la base de données
-- Démarrer XAMPP et activer MySQL
-- Créer une base de données nommée `ev_charge_maroc`
+### 5. Configure the Database
 
-### 6. Appliquer les migrations
+- Start XAMPP and activate MySQL
+- Create a database named `ev_charge_maroc`
+
+### 6. Apply Migrations
+
 ```bash
 python manage.py migrate
 ```
 
-### 7. Importer les données de stations (optionnel)
+### 7. Import Station Data (Optional)
+
 ```bash
 python manage.py shell
 exec(open('import_openchargemap.py').read())
 ```
 
-### 8. Lancer le serveur de développement
+### 8. Start the Development Server
+
 ```bash
 python manage.py runserver
 ```
 
-## Structure du projet
+## QR Code Authentication Flow
+
+The application uses QR codes for seamless authentication at charging stations:
+
+1. Users book a charging session through the platform
+2. A unique QR code is generated for the reservation
+3. At the charging station, users scan this QR code to authenticate
+4. The system validates the QR code and activates the charging session
+
+## OpenChargeMap API Setup
+
+To use the OpenChargeMap API for importing station data:
+
+1. Register for an API key at [OpenChargeMap](https://openchargemap.org/site/developerinfo)
+2. Add your API key to the `.env` file:
+   ```
+   OCM_API_KEY=your_openchargemap_api_key
+   ```
+
+## Project Structure
+
 ```
 EV_Charge_Maroc/
-├── EV_Charge_Maroc/      # Projet principal Django
-├── Home/                 # Application page d'accueil
-├── help/                 # Application d'aide
-├── map/                  # Application de carte
-├── payments/             # Application de paiements
-├── stations/             # Application de gestion des stations
-├── users/                # Application de gestion des utilisateurs
-├── static/               # Fichiers statiques (CSS, JS, images)
-├── media/                # Fichiers téléchargés par les utilisateurs
-├── templates/            # Templates HTML
-├── manage.py             # Script de gestion Django
-└── requirements.txt      # Dépendances du projet
+├── EV_Charge_Maroc/      # Main Django project
+├── Home/                 # Home page application
+├── help/                 # Help application
+├── map/                  # Map application
+├── payments/             # Payments application
+├── stations/             # Stations management application
+├── users/                # User management application
+├── static/               # Static files (CSS, JS, images)
+├── media/                # User-uploaded files
+├── templates/            # HTML templates
+├── manage.py             # Django management script
+└── requirements.txt      # Project dependencies
 ```
 
-## Résolution des problèmes courants
+## Common Issues
 
-### Problèmes de configuration
-1. **Erreur "No module named 'dotenv'"** 
-   - Solution : Installez python-dotenv avec `pip install python-dotenv`
+### Configuration Problems
 
-2. **Erreur de connexion à la base de données**
-   - Vérifiez que XAMPP est en cours d'exécution
-   - Assurez-vous que les informations de connexion dans `.env` sont correctes
-   - Vérifiez que la base de données `ev_charge_maroc` existe
+1. **Error "No module named 'dotenv'"**
+   - Solution: Install python-dotenv with `pip install python-dotenv`
 
-3. **Erreur avec les variables d'environnement**
-   - Vérifiez que vous avez bien créé le fichier `.env` à partir du template
-   - Assurez-vous que le fichier est placé à la racine du projet
-   - Redémarrez le serveur Django après modification du fichier `.env`
+2. **Database Connection Error**
+   - Verify that XAMPP is running
+   - Ensure connection information in `.env` is correct
+   - Check that the `ev_charge_maroc` database exists
 
-4. **Problèmes avec Stripe**
-   - Assurez-vous d'avoir créé un compte Stripe et d'avoir ajouté vos clés d'API dans le fichier `.env`
-   - Pour les tests, utilisez les numéros de cartes de test fournis par Stripe
+3. **Environment Variable Errors**
+   - Verify that you created the `.env` file from the template
+   - Make sure the file is placed at the project root
+   - Restart the Django server after modifying the `.env` file
 
-5. **Erreurs d'envoi d'emails**
-   - Si vous utilisez Gmail, assurez-vous d'avoir activé "l'accès des applications moins sécurisées" ou de générer un mot de passe d'application
+4. **Issues with Stripe**
+   - Make sure you've created a Stripe account and added your API keys to the `.env` file
+   - For testing, use the test card numbers provided by Stripe
 
-## Contact et licence
-Projet développé par Mohamed Amine Nihmatouallah.
+5. **Email Sending Errors**
+   - If using Gmail, make sure you've enabled "less secure app access" or generated an application password
 
-Pour toute question ou demande d'autorisation, veuillez me contacter à [mohamed.amine.nihmatouallah@gmail.com](mailto:mohamed.amine.nihmatouallah@gmail.com).
+## Contact
 
-**Avertissement :**  
-Ce projet est protégé par des droits d'auteur. Il est strictement interdit d'utiliser, de modifier ou de distribuer ce code sans l'autorisation explicite de l'auteur.
+Project developed by Mohamed Amine Nihmatouallah.
 
-## Licence
+For questions or permission requests:
+- Email: [mohamed.amine.nihmatouallah@gmail.com](mailto:mohamed.amine.nihmatouallah@gmail.com)
+- LinkedIn: [Mohamed Amine NIHMATOUALLAH](https://www.linkedin.com/in/mohamed-amine-nihmatouallah/)
 
-Ce projet est sous licence MIT. Consultez le fichier [LICENSE](./LICENSE) pour plus d'informations.
+## License
+
+This project is protected by copyright. Any use, modification, or distribution of this code is strictly prohibited without explicit permission from the author.  
+The code may only be used for personal testing, educational purposes, or evaluation.
+
+For permission requests, contact [mohamed.amine.nihmatouallah@gmail.com](mailto:mohamed.amine.nihmatouallah@gmail.com).
