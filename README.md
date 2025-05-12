@@ -166,19 +166,23 @@ EV_Charge_Maroc/
 ### Configuration Problems
 
 1. **Error "No module named 'dotenv'"**
+
    - Solution: Install python-dotenv with `pip install python-dotenv`
 
 2. **Database Connection Error**
+
    - Verify that XAMPP is running
    - Ensure connection information in `.env` is correct
    - Check that the `ev_charge_maroc` database exists
 
 3. **Environment Variable Errors**
+
    - Verify that you created the `.env` file from the template
    - Make sure the file is placed at the project root
    - Restart the Django server after modifying the `.env` file
 
 4. **Issues with Stripe**
+
    - Make sure you've created a Stripe account and added your API keys to the `.env` file
    - For testing, use the test card numbers provided by Stripe
 
@@ -190,6 +194,7 @@ EV_Charge_Maroc/
 Project developed by Mohamed Amine Nihmatouallah.
 
 For questions or permission requests:
+
 - Email: [mohamed.amine.nihmatouallah@gmail.com](mailto:mohamed.amine.nihmatouallah@gmail.com)
 - LinkedIn: [Mohamed Amine NIHMATOUALLAH](https://www.linkedin.com/in/mohamed-amine-nihmatouallah/)
 
@@ -198,4 +203,9 @@ For questions or permission requests:
 This project is protected by copyright. Any use, modification, or distribution of this code is strictly prohibited without explicit permission from the author.  
 The code may only be used for personal testing, educational purposes, or evaluation.
 
+For more details, see the [LICENSE](./LICENSE) file.  
 For permission requests, contact [mohamed.amine.nihmatouallah@gmail.com](mailto:mohamed.amine.nihmatouallah@gmail.com).
+
+```
+
+```
